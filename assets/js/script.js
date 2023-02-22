@@ -10,7 +10,6 @@ let schedulerTimes = [
     { hour: 4, mins: ["00","15","30","45"], text: "four" },
     { hour: 5, mins: ["00","15","30","45"], text: "five" }
 ]
-
 /**
  * @init
  * runs on page load
@@ -52,6 +51,22 @@ function setClock() {
     $(".current-time").append(currentTime);
 }
 /**
+ * @clearEntry
+ * clear the selected entry from local storage
+ */
+function clearEntry(selectedVal) {
+    // initialize variables
+    let elemId = "#" + selectedVal.id.replace('btn-',''),
+        existingEntries = JSON.parse(localStorage.getItem("SchedulerTasks")),
+        entryIdx = existingEntries.findIndex((obj) => obj.id === elemId);
+    // if ID exists, remove the object from the array and update local storage
+    if (entryIdx > -1) {
+        existingEntries.splice(entryIdx, 1);
+        localStorage.setItem("SchedulerTasks", JSON.stringify(existingEntries));
+        $(elemId).val('').focus();
+    }
+}
+/**
  * @generateScheduler
  * creates and appends the scheduler
  * to the page
@@ -72,7 +87,7 @@ function generateScheduler(callback) {
         for (let j = 0; j < schedulerTimes[i].mins.length; j++) {
             let min = schedulerTimes[i].mins[j];
             $(minList).append("<li>" + min + "</li>");
-            $(entryList).append("<li><form id=\"form-" + text + "-" + min + "\" onsubmit=\"saveEntry(this);return false\"><label for=\"" + text + "-" + min + "\" class=\"screen-reader\">" + hour + ":" + min + "</label><textarea id=\"" + text + "-" + min + "\" name=\"" + text + "-" + min + "\" rows=\"4\" cols=\"25\" required></textarea><button type=\"submit\">Save</button></form></li>");
+            $(entryList).append("<li><form id=\"form-" + text + "-" + min + "\" onsubmit=\"saveEntry(this);return false\"><label for=\"" + text + "-" + min + "\" class=\"screen-reader\">" + hour + ":" + min + "</label><textarea id=\"" + text + "-" + min + "\" name=\"" + text + "-" + min + "\" rows=\"4\" cols=\"25\" required></textarea><div class=\"btn-wrapper\"><button type=\"button\" id=\"btn-" + text + "-" + min + "\" onclick=\"clearEntry(this)\">Clear</button><button type=\"submit\">Save</button></div></form></li>");
         }
         $(minWrapper).append(minList);
         $(entriesWrapper).append(entryList);
@@ -111,25 +126,37 @@ function colorCodeEntries() {
                     if (entryMin === 0) {
                         $(elem).addClass("current-entry");
                     } else {
-                        $(elem).addClass("past-entry");
+                        $(elem).addClass("future-entry");
                     }
                 } else if (currentMinute >= 15 && currentMinute < 30) {
                     if (entryMin === 15) {
                         $(elem).addClass("current-entry");
-                    } else {
+                    } else if (entryMin === 0) {
                         $(elem).addClass("past-entry");
+                    } else {
+                        $(elem).addClass("future-entry");
                     }
                 } else if (currentMinute >= 30 && currentMinute < 45) {
                     if (entryMin === 30) {
                         $(elem).addClass("current-entry");
-                    } else {
+                    } else if (entryMin === 0) {
                         $(elem).addClass("past-entry");
+                    } else if (entryMin === 15) {
+                        $(elem).addClass("past-entry");
+                    } else {
+                        $(elem).addClass("future-entry");
                     }
                 } else if (currentMinute >= 45 && currentMinute < 60) {
                     if (entryMin === 45) {
                         $(elem).addClass("current-entry");
-                    } else {
+                    } else if (entryMin === 0) {
                         $(elem).addClass("past-entry");
+                    } else if (entryMin === 15) {
+                        $(elem).addClass("past-entry");
+                    } else if (entryMin === 30) {
+                        $(elem).addClass("past-entry");
+                    } else {
+                        $(elem).addClass("future-entry");
                     }
                 }
             } else if (currentHour > hour) {
@@ -193,7 +220,7 @@ function saveEntry(selectedVal) {
             localStorage.setItem("SchedulerTasks", JSON.stringify(existingEntries));
         } else {
             // if no ID exists, concatenate the old list with the new one and save to local storage
-            combinedArr = existingEntries.concat(newArr);
+            let combinedArr = existingEntries.concat(newArr);
             localStorage.setItem("SchedulerTasks", JSON.stringify(combinedArr));
         }
     } else {

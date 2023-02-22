@@ -138,7 +138,7 @@ header p {
 }
 .scheduler .min-wrapper ul li {
     list-style-type: none;
-    line-height: 6.4;
+    line-height: 10;
     font-size: 1em;
     font-family: var(--font-main-style);
 }
@@ -156,18 +156,37 @@ header p {
     border-top: 1px dashed var(--bg-color-two);
     border-bottom: 2px dashed var(--bg-color-three);
     font-family: var(--font-main-style);
-    width: 75%;
+    width: 100%;
     padding: 1em;
+    display: block;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
 }
 .scheduler .entries-wrapper ul li button {
-    border: 1px solid var(--bg-color-three);
+    border: 3px solid var(--black);
+    background-color: var(--bg-color-two);
     padding: 0.5em;
-    position: absolute;
-    top: 1.8em;
-    right: 2.4em;
+    display: block;
+    width: 100%;
+    border-radius: 20px;
+    margin: 0.5em;
+    text-transform: uppercase;
 }
 .scheduler .entries-wrapper ul li button:hover {
+    background-color: var(--black);
+    color: var(--white);
     cursor: pointer;
+}
+.scheduler .entries-wrapper ul li form {
+    padding: 1em 1em 0 1em;
+}
+.scheduler .entries-wrapper ul li:nth-child(4) form {
+    padding: 1em 1em 1em 1em;
+}
+.scheduler .btn-wrapper {
+    display: flex;
+    flex-direction: row;
 }
 
 /************************************************
