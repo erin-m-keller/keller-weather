@@ -45,6 +45,11 @@ body {
     height: 1px;
     overflow: hidden;
 }
+.current-date {
+    text-align: center;
+    margin: 1em auto;
+    font-family: var(--font-main-style);
+}
 
 /************************************************
    HEADER                                 @header
@@ -86,13 +91,16 @@ header p {
     max-width: 1000px;
     margin: 1em auto;
     border-radius: 10px;
-    align-items: start;
+    align-items: stretch;
+    justify-content: center;
     background-color: var(--bg-color-two);
+    position: relative;
 }
 .scheduler .hour-wrapper,
 .scheduler .min-wrapper {
     width: 3em;
     flex-grow: 0;
+    text-align: center;
 }
 .scheduler .entries-wrapper {
     flex-grow: 1;
@@ -101,7 +109,7 @@ header p {
     font-size: 1.5em;
     margin: 0.65em 0.5em;
     font-family: var(--font-main-style);
-    line-height: 1.8;
+    line-height: 1.9;
 }
 .scheduler .min-wrapper ul {
     margin: 0;
@@ -118,6 +126,7 @@ header p {
 }
 .scheduler .entries-wrapper ul li {
     list-style-type: none;
+    position: relative;
 }
 .scheduler .entries-wrapper ul li textarea {
     border-left: 1px dashed var(--bg-color-two);
@@ -125,7 +134,17 @@ header p {
     border-top: 1px dashed var(--bg-color-two);
     border-bottom: 2px dashed var(--bg-color-three);
     font-family: var(--font-main-style);
-    width: 99%;
+    width: 75%;
+}
+.scheduler .entries-wrapper ul li button {
+    border: 1px solid var(--bg-color-three);
+    padding: 0.5em;
+    position: absolute;
+    top: 1.2em;
+    right: 1.5em;
+}
+.scheduler .entries-wrapper ul li button:hover {
+    cursor: pointer;
 }
 
 /************************************************
