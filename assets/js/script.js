@@ -1,3 +1,4 @@
+// initialize global variables
 let schedulerTimes = [
     { hour: 9, mins: ["00","15","30","45"], text: "nine" },
     { hour: 10, mins: ["00","15","30","45"], text: "ten" },
@@ -15,16 +16,41 @@ let schedulerTimes = [
  * runs on page load
  */
 function init() {
-    // callback function will execute @checkForData once @generateScheduler has completed
+    // callback function will execute inner functions once @generateScheduler has completed
     generateScheduler(function() {
+        // check for local storage
         checkForData();
+        // set the date
+        setDate();
+        // update time every second
+        setInterval(setClock, 1000);
+        // color code entries
+        colorCodeEntries();
     });
-    // get the current date and append to the page
-    let time = dayjs(new Date()).format('MMM D, YYYY');
-    $(".current-date").append(time);
 }
 init();
-
+/**
+ * @setDate
+ * sets the date on the page
+ */
+function setDate() {
+    // initialize variables
+    let date = dayjs(new Date()).format('MMM D, YYYY');
+    // append to page
+    $(".current-date").append(date);
+}
+/**
+ * @setClock
+ * sets the clock on the page
+ */
+function setClock() {
+    // initialize variables
+    let now = dayjs(),
+        currentTime = now.format("h:mm:ss a");
+    // append to page
+    $(".current-time").empty();
+    $(".current-time").append(currentTime);
+}
 /**
  * @generateScheduler
  * creates and appends the scheduler
@@ -56,6 +82,73 @@ function generateScheduler(callback) {
         $(".scheduler-wrapper").append(scheduler);
     }
     callback();
+}
+/**
+ * @colorCodeEntries
+ * sets background color of text blocks
+ * if time is in past, present or future
+ */
+function colorCodeEntries() {
+    // initialize variables
+    let now = dayjs(),
+        currentTime = now.format("h:mm"),
+        currentHour = currentTime.substring(0, currentTime.indexOf(":")), 
+        currentMinute = currentTime.substring(currentTime.lastIndexOf(':')+1);
+    // loop through the available entry times
+    for (let i = 0; i < schedulerTimes.length; i++) {
+        // initialize variables
+        let txt = schedulerTimes[i].text,
+            hour = schedulerTimes[i].hour, 
+            mins = schedulerTimes[i].mins;
+        // loop through the minutes array
+        for (var j = 0; j < mins.length; j++) {
+            // initialize variables
+            let elem = "#" + txt + "-" + mins[j],
+                entryMin = parseInt(mins[j]);
+            // if/else statement to set classes depending on the time
+            if (currentHour == hour) {
+                if (currentMinute >= 0 && currentMinute < 15) {
+                    if (entryMin === 0) {
+                        $(elem).addClass("current-entry");
+                    } else {
+                        $(elem).addClass("past-entry");
+                    }
+                } else if (currentMinute >= 15 && currentMinute < 30) {
+                    if (entryMin === 15) {
+                        $(elem).addClass("current-entry");
+                    } else {
+                        $(elem).addClass("past-entry");
+                    }
+                } else if (currentMinute >= 30 && currentMinute < 45) {
+                    if (entryMin === 30) {
+                        $(elem).addClass("current-entry");
+                    } else {
+                        $(elem).addClass("past-entry");
+                    }
+                } else if (currentMinute >= 45 && currentMinute < 60) {
+                    if (entryMin === 45) {
+                        $(elem).addClass("current-entry");
+                    } else {
+                        $(elem).addClass("past-entry");
+                    }
+                }
+            } else if (currentHour > hour) {
+                $(elem).addClass("past-entry");
+            } else if (currentHour < hour) {
+                if (hour === 9) {
+                    $(elem).addClass("past-entry");
+                } else if (hour === 10) {
+                    $(elem).addClass("past-entry");
+                } else if (hour === 11) {
+                    $(elem).addClass("past-entry");
+                } else if (hour === 12) {
+                    $(elem).addClass("past-entry");
+                } else {
+                    $(elem).addClass("future-entry");
+                }
+            } 
+        }
+    }
 }
 /**
  * @checkForData

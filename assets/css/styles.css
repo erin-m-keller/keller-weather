@@ -50,6 +50,20 @@ body {
     margin: 1em auto;
     font-family: var(--font-main-style);
 }
+.current-time {
+    text-align: center;
+    font-size: 1.5em;
+    font-family: var(--font-main-style);
+}
+.past-entry {
+    background-color: #9e9bb2;
+}
+.current-entry {
+    background-color: #f44336;
+}
+.future-entry {
+    background-color: #4caf50;
+}
 
 /************************************************
    HEADER                                 @header
@@ -101,22 +115,30 @@ header p {
     width: 3em;
     flex-grow: 0;
     text-align: center;
+    position: relative;
 }
 .scheduler .entries-wrapper {
     flex-grow: 1;
 }
 .scheduler .hour-wrapper h2 {
-    font-size: 1.5em;
-    margin: 0.65em 0.5em;
+    font-size: 3em;
     font-family: var(--font-main-style);
-    line-height: 1.9;
+    position: absolute;
+    top: -29px;
+    left: 0;
+    background-color: var(--white);
+    width: 1.5em;
+    height: 1.5em;
+    border-radius: 50%;
+    line-height: 1.5;
+    border: 1px dashed var(--bg-color-three);
 }
 .scheduler .min-wrapper ul {
     margin: 0;
 }
 .scheduler .min-wrapper ul li {
     list-style-type: none;
-    line-height: 4.8;
+    line-height: 6.4;
     font-size: 1em;
     font-family: var(--font-main-style);
 }
@@ -135,13 +157,14 @@ header p {
     border-bottom: 2px dashed var(--bg-color-three);
     font-family: var(--font-main-style);
     width: 75%;
+    padding: 1em;
 }
 .scheduler .entries-wrapper ul li button {
     border: 1px solid var(--bg-color-three);
     padding: 0.5em;
     position: absolute;
-    top: 1.2em;
-    right: 1.5em;
+    top: 1.8em;
+    right: 2.4em;
 }
 .scheduler .entries-wrapper ul li button:hover {
     cursor: pointer;
