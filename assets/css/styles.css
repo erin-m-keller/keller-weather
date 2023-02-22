@@ -37,6 +37,12 @@ body {
     height: 100%;
     position: relative;
 }
+textarea {
+    background-color: #9e9bb2;
+}
+main {
+    position: relative;
+}
 .screen-reader {
     position: absolute;
     left: -10000px;
@@ -62,6 +68,25 @@ body {
     background-color: #f44336;
 }
 .future-entry {
+    background-color: #4caf50;
+}
+.sticky {
+	position: -webkit-sticky;
+	position: sticky;
+	top: 0;
+}
+.square {
+    height: 1em;
+    width: 1em;
+    display: inline-block;
+}
+.square.purple {
+    background-color: #9e9bb2;
+}
+.square.red {
+    background-color: #f44336;
+}
+.square.green {
     background-color: #4caf50;
 }
 
@@ -92,6 +117,24 @@ header p {
     header p {
         font-size: 1.25em;
     }
+}
+
+/************************************************
+   LEGEND                                 @legend
+
+   The base styles for the legend
+************************************************/
+.legend {
+    padding: 1em;
+    background-color: var(--white);
+    z-index: 2;
+}
+.legend ul {
+    text-align: center;
+}
+.legend ul li {
+    display: inline;
+    font-family: var(--font-main-style);
 }
 
 /************************************************

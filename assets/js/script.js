@@ -9,7 +9,8 @@ let schedulerTimes = [
     { hour: 3, mins: ["00","15","30","45"], text: "three" },
     { hour: 4, mins: ["00","15","30","45"], text: "four" },
     { hour: 5, mins: ["00","15","30","45"], text: "five" }
-]
+];
+
 /**
  * @init
  * runs on page load
@@ -24,7 +25,7 @@ function init() {
         // update time every second
         setInterval(setClock, 1000);
         // color code entries
-        colorCodeEntries();
+        setInterval(colorCodeEntries, 1000);
     });
 }
 init();
@@ -75,14 +76,14 @@ function generateScheduler(callback) {
     // for loop runs for each element in schedulerTimes array
     for (let i = 0; i < schedulerTimes.length; i++) {
         // initialize the variables
-        let scheduler = $("<div class=\"scheduler\"></div>"),
-            minWrapper = $("<div class=\"min-wrapper\"></div>"),
+        let minWrapper = $("<div class=\"min-wrapper\"></div>"),
             entriesWrapper = $("<div class=\"entries-wrapper\"></div>"),
             hourWrapper = $("<div class=\"hour-wrapper\"></div>"),
             minList = $("<ul></ul>"),
-            entryList = $("<ul></ul>");
-        let hour = schedulerTimes[i].hour,
-            text = schedulerTimes[i].text;
+            entryList = $("<ul></ul>"),
+            hour = schedulerTimes[i].hour,
+            text = schedulerTimes[i].text,
+            scheduler = $("<div class=\"scheduler\" id=\"" + text + "\"></div>")
         $(hourWrapper).append("<h2>" + hour + "</h2>");
         for (let j = 0; j < schedulerTimes[i].mins.length; j++) {
             let min = schedulerTimes[i].mins[j];
