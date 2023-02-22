@@ -1,0 +1,149 @@
+/************************************************
+*
+*   Main Stylesheet
+*   @version (1.0)
+*   @date (2023)
+*
+*   1.) GENERAL ________________ @general
+*   2.) HEADER _________________ @header
+*   3.) SCHEDULER ______________ @scheduler
+*   4.) FOOTER _________________ @footer
+*
+************************************************/
+
+/************************************************
+   GENERAL                              @general
+
+   The base styles for the page, text
+   and links. Includes utility class styles
+************************************************/
+:root {
+    --bg-color-one: #d4afb9;
+    --bg-color-two: #d1cfe2;
+    --bg-color-three: #9cadce;
+    --bg-color-four: #fffcd7;
+    --bg-color-five: #2D3142;
+    --white: #FFF;
+    --black: #000;
+    --font-main-style: "Montserrat", sans-serif;
+}
+* {
+    margin: 0;
+    padding: 0;
+}
+html,
+body {
+    background-color: var(--bg-color-four);
+    height: 100%;
+    position: relative;
+}
+.screen-reader {
+    position: absolute;
+    left: -10000px;
+    top: auto;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}
+
+/************************************************
+   HEADER                                 @header
+
+   The base styles for the header
+************************************************/
+header {
+    text-align: center;
+    background-color: var(--bg-color-five);
+    padding: 2em;
+}
+header h1 {
+    font-size: 2em;
+    color: var(--white);
+    font-family: var(--font-main-style);
+}
+header p {
+    font-size: 1em;
+    color: var(--white);
+    font-family: var(--font-main-style);
+}
+@media screen and (min-width: 800px) {
+    header h1 {
+        font-size: 2.5em;
+    }
+    header p {
+        font-size: 1.25em;
+    }
+}
+
+/************************************************
+   SCHEDULER                           @scheduler
+
+   The base styles for the scheduler
+************************************************/
+.scheduler {
+    display: flex;
+    width: 90%;
+    max-width: 1000px;
+    margin: 1em auto;
+    border-radius: 10px;
+    align-items: start;
+    background-color: var(--bg-color-two);
+}
+.scheduler .hour-wrapper,
+.scheduler .min-wrapper {
+    width: 3em;
+    flex-grow: 0;
+}
+.scheduler .entries-wrapper {
+    flex-grow: 1;
+}
+.scheduler .hour-wrapper h2 {
+    font-size: 1.5em;
+    margin: 0.65em 0.5em;
+    font-family: var(--font-main-style);
+    line-height: 1.8;
+}
+.scheduler .min-wrapper ul {
+    margin: 0;
+}
+.scheduler .min-wrapper ul li {
+    list-style-type: none;
+    line-height: 4.8;
+    font-size: 1em;
+    font-family: var(--font-main-style);
+}
+.scheduler .entries-wrapper ul {
+    width: 100%;
+    margin-top: 0.6em;
+}
+.scheduler .entries-wrapper ul li {
+    list-style-type: none;
+}
+.scheduler .entries-wrapper ul li textarea {
+    border-left: 1px dashed var(--bg-color-two);
+    border-right: 1px dashed var(--bg-color-two);
+    border-top: 1px dashed var(--bg-color-two);
+    border-bottom: 2px dashed var(--bg-color-three);
+    font-family: var(--font-main-style);
+    width: 99%;
+}
+
+/************************************************
+   FOOTER                                 @footer
+
+   The styles for the footer
+************************************************/
+.footer {
+    width: 100%;
+    height: 3em;
+    text-align: center;
+    background: var(--bg-color-one);
+}
+.footer h3,
+.footer h3 > a {
+    font-size: 1em;
+    color: #000;
+    margin-bottom: 0;
+    padding-top: 1em;
+    font-family: var(--font-main-style);
+}
