@@ -108,6 +108,8 @@ function colorCodeEntries() {
     // initialize variables
     let now = dayjs(),
         currentTime = now.format("h:mm"),
+        fullTime = now.format("h:mm a"),
+        currentSetting = fullTime.substring(fullTime.indexOf(' ') + 1),
         currentHour = currentTime.substring(0, currentTime.indexOf(":")), 
         currentMinute = currentTime.substring(currentTime.lastIndexOf(':')+1);
     // loop through the available entry times
@@ -122,7 +124,47 @@ function colorCodeEntries() {
             let elem = "#" + txt + "-" + mins[j],
                 entryMin = parseInt(mins[j]);
             // if/else statement to set classes depending on the time
-            if (currentHour == hour) {
+            if (currentHour == hour && currentSetting == "pm") {
+                if (hour != "9" && hour != "10" && hour != "11" && hour != "12") {
+                    if (currentMinute >= 0 && currentMinute < 15) {
+                        if (entryMin === 0) {
+                            $(elem).addClass("current-entry");
+                        } else {
+                            $(elem).addClass("future-entry");
+                        }
+                    } else if (currentMinute >= 15 && currentMinute < 30) {
+                        if (entryMin === 15) {
+                            $(elem).addClass("current-entry");
+                        } else if (entryMin === 0) {
+                            $(elem).addClass("past-entry");
+                        } else {
+                            $(elem).addClass("future-entry");
+                        }
+                    } else if (currentMinute >= 30 && currentMinute < 45) {
+                        if (entryMin === 30) {
+                            $(elem).addClass("current-entry");
+                        } else if (entryMin === 0) {
+                            $(elem).addClass("past-entry");
+                        } else if (entryMin === 15) {
+                            $(elem).addClass("past-entry");
+                        } else {
+                            $(elem).addClass("future-entry");
+                        }
+                    } else if (currentMinute >= 45 && currentMinute < 60) {
+                        if (entryMin === 45) {
+                            $(elem).addClass("current-entry");
+                        } else if (entryMin === 0) {
+                            $(elem).addClass("past-entry");
+                        } else if (entryMin === 15) {
+                            $(elem).addClass("past-entry");
+                        } else if (entryMin === 30) {
+                            $(elem).addClass("past-entry");
+                        } else {
+                            $(elem).addClass("future-entry");
+                        }
+                    }
+                }
+            } else if (currentHour == hour && currentSetting == "am") {
                 if (currentMinute >= 0 && currentMinute < 15) {
                     if (entryMin === 0) {
                         $(elem).addClass("current-entry");

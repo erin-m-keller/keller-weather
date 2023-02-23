@@ -133,6 +133,9 @@ header p {
     z-index: 2;
     text-align: center;
 }
+.legend table {
+    margin: 0 auto;
+}
 .legend ul {
     text-align: center;
 }
