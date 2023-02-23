@@ -60,10 +60,13 @@ function clearEntry(selectedVal) {
     let elemId = "#" + selectedVal.id.replace('btn-',''),
         existingEntries = JSON.parse(localStorage.getItem("SchedulerTasks")),
         entryIdx = existingEntries.findIndex((obj) => obj.id === elemId);
-    // if ID exists, remove the object from the array and update local storage
+    // if ID exists, remove the object from the local storage array and update
     if (entryIdx > -1) {
+        // splice at the selected index
         existingEntries.splice(entryIdx, 1);
+        // update local storage
         localStorage.setItem("SchedulerTasks", JSON.stringify(existingEntries));
+        // set focus to the text area that was just deleted
         $(elemId).val('').focus();
     }
 }
@@ -83,13 +86,18 @@ function generateScheduler(callback) {
             entryList = $("<ul></ul>"),
             hour = schedulerTimes[i].hour,
             text = schedulerTimes[i].text,
-            scheduler = $("<div class=\"scheduler\" id=\"" + text + "\"></div>")
+            scheduler = $("<div class=\"scheduler\" id=\"" + text + "\"></div>");
+        // append the hour to the scheduler entry
         $(hourWrapper).append("<h2>" + hour + "</h2>");
+        // for each minute listed in the array, append a new li with a form, text area and two buttons
         for (let j = 0; j < schedulerTimes[i].mins.length; j++) {
+            // initiallize variables
             let min = schedulerTimes[i].mins[j];
+            // append the list items
             $(minList).append("<li>" + min + "</li>");
             $(entryList).append("<li><form id=\"form-" + text + "-" + min + "\" onsubmit=\"saveEntry(this);return false\"><label for=\"" + text + "-" + min + "\" class=\"screen-reader\">" + hour + ":" + min + "</label><textarea id=\"" + text + "-" + min + "\" name=\"" + text + "-" + min + "\" rows=\"4\" cols=\"25\" required></textarea><div class=\"btn-wrapper\"><button type=\"button\" id=\"btn-" + text + "-" + min + "\" onclick=\"clearEntry(this)\">Clear <i class=\"fa-solid fa-trash\"></i></button><button type=\"submit\">Save <i class=\"fa-solid fa-floppy-disk\"></i></button></div></form></li>");
         }
+        // append the items to the page
         $(minWrapper).append(minList);
         $(entriesWrapper).append(entryList);
         $(scheduler).append(hourWrapper);
@@ -97,78 +105,68 @@ function generateScheduler(callback) {
         $(scheduler).append(entriesWrapper);
         $(".scheduler-wrapper").append(scheduler);
     }
+    // fires once function completes to run the next function
     callback();
 }
 /**
  * @checkEntryMinutes
- * sets class depending on the current min
+ * sets class depending on the current minute(s)
  */
 function checkEntryMinutes(currentMinute,entryMin,elem) {
+    // if currentMinute is between 0 and 15, set 0 to current and the rest to future
     if (currentMinute >= 0 && currentMinute < 15) {
         if (entryMin === 0) {
-            $(elem).removeClass("past-entry");
-            $(elem).removeClass("future-entry");
-            $(elem).addClass("current-entry");
+            addRemoveClasses(elem,"past-entry","future-entry","current-entry");
         } else {
-            $(elem).removeClass("past-entry");
-            $(elem).removeClass("current-entry");
-            $(elem).addClass("future-entry");
+            addRemoveClasses(elem,"past-entry","current-entry","future-entry");
         }
-    } else if (currentMinute >= 15 && currentMinute < 30) {
+    } 
+    // if currentMinute is between 15 and 30, set 0 to past, 15 to current, and the rest to future
+    else if (currentMinute >= 15 && currentMinute < 30) {
         if (entryMin === 15) {
-            $(elem).removeClass("past-entry");
-            $(elem).removeClass("future-entry");
-            $(elem).addClass("current-entry");
+            addRemoveClasses(elem,"past-entry","future-entry","current-entry");
         } else if (entryMin === 0) {
-            $(elem).removeClass("current-entry");
-            $(elem).removeClass("future-entry");
-            $(elem).addClass("past-entry");
+            addRemoveClasses(elem,"current-entry","future-entry","past-entry");
         } else {
-            $(elem).removeClass("past-entry");
-            $(elem).removeClass("current-entry");
-            $(elem).addClass("future-entry");
-        }
-    } else if (currentMinute >= 30 && currentMinute < 45) {
-        if (entryMin === 30) {
-            $(elem).removeClass("past-entry");
-            $(elem).removeClass("future-entry");
-            $(elem).addClass("current-entry");
-        } else if (entryMin === 0) {
-            $(elem).removeClass("current-entry");
-            $(elem).removeClass("future-entry");
-            $(elem).addClass("past-entry");
-        } else if (entryMin === 15) {
-            $(elem).removeClass("current-entry");
-            $(elem).removeClass("future-entry");
-            $(elem).addClass("past-entry");
-        } else {
-            $(elem).removeClass("past-entry");
-            $(elem).removeClass("current-entry");
-            $(elem).addClass("future-entry");
-        }
-    } else if (currentMinute >= 45 && currentMinute < 60) {
-        if (entryMin === 45) {
-            $(elem).removeClass("past-entry");
-            $(elem).removeClass("future-entry");
-            $(elem).addClass("current-entry");
-        } else if (entryMin === 0) {
-            $(elem).removeClass("current-entry");
-            $(elem).removeClass("future-entry");
-            $(elem).addClass("past-entry");
-        } else if (entryMin === 15) {
-            $(elem).removeClass("current-entry");
-            $(elem).removeClass("future-entry");
-            $(elem).addClass("past-entry");
-        } else if (entryMin === 30) {
-            $(elem).removeClass("current-entry");
-            $(elem).removeClass("future-entry");
-            $(elem).addClass("past-entry");
-        } else {
-            $(elem).removeClass("past-entry");
-            $(elem).removeClass("current-entry");
-            $(elem).addClass("future-entry");
+            addRemoveClasses(elem,"past-entry","current-entry","future-entry");
         }
     }
+    // if currentMinute is between 30 and 45, set 0 and 15 to past, 30 to current, and the rest to future 
+    else if (currentMinute >= 30 && currentMinute < 45) {
+        if (entryMin === 30) {
+            addRemoveClasses(elem,"past-entry","future-entry","current-entry");
+        } else if (entryMin === 0) {
+            addRemoveClasses(elem,"current-entry","future-entry","past-entry");
+        } else if (entryMin === 15) {
+            addRemoveClasses(elem,"current-entry","future-entry","past-entry");
+        } else {
+            addRemoveClasses(elem,"past-entry","current-entry","future-entry");
+        }
+    }
+    // if currentMinute is between 45 and 60, set 0, 15 and 30 to past, and 45 to current
+    else if (currentMinute >= 45 && currentMinute < 60) {
+        if (entryMin === 45) {
+            addRemoveClasses(elem,"past-entry","future-entry","current-entry");
+        } else if (entryMin === 0) {
+            addRemoveClasses(elem,"current-entry","future-entry","past-entry");
+        } else if (entryMin === 15) {
+            addRemoveClasses(elem,"current-entry","future-entry","past-entry");
+        } else if (entryMin === 30) {
+            addRemoveClasses(elem,"current-entry","future-entry","past-entry");
+        } 
+    }
+}/**
+ * @addRemoveClasses
+ * sets background color of text blocks
+ * if time is in past, present or future
+ */
+function addRemoveClasses(element,removeClass1,removeClass2,addClass1) {
+    // remove class 1
+    $(element).removeClass(removeClass1);
+    // remove class 2
+    $(element).removeClass(removeClass2);
+    // add class 1
+    $(element).addClass(addClass1);
 }
 /**
  * @colorCodeEntries
@@ -180,12 +178,9 @@ function colorCodeEntries() {
     let now = dayjs(),
         currentTime = now.format("h:mm"),
         fullTime = now.format("h:mm a"),
-        //currentSetting = fullTime.substring(fullTime.indexOf(' ') + 1),
-        //currentHour = currentTime.substring(0, currentTime.indexOf(":")), 
-        //currentMinute = currentTime.substring(currentTime.lastIndexOf(':')+1),
-        currentSetting = "am",
-        currentHour = 9, 
-        currentMinute = 30,
+        currentSetting = fullTime.substring(fullTime.indexOf(' ') + 1),
+        currentHour = currentTime.substring(0, currentTime.indexOf(":")), 
+        currentMinute = currentTime.substring(currentTime.lastIndexOf(':')+1),
         pmArr = ["6","7","8","9","10","11"],
         amArr = ["12","1","2","3","4","5","6","7","8"];
     // loop through the available entry times
@@ -199,16 +194,17 @@ function colorCodeEntries() {
             // initialize variables
             let elem = "#" + txt + "-" + mins[j],
                 entryMin = parseInt(mins[j]);
+            // if it is PM and after 6 set all entries to past-entry
             if (pmArr.indexOf(currentHour) !== -1 && currentSetting == "pm") {
-                $(elem).removeClass("current-entry");
-                $(elem).removeClass("future-entry");
-                $(elem).addClass("past-entry");
-            } else if (amArr.indexOf(currentHour) !== -1 && currentSetting == "am") {
-                $(elem).removeClass("current-entry");
-                $(elem).removeClass("future-entry");
-                $(elem).addClass("past-entry");
-            } else {
-                // afternoon classes
+                addRemoveClasses(elem,"current-entry","future-entry","past-entry");
+            } 
+            // if it is AM and before 9 set all entries to past-entry
+            else if (amArr.indexOf(currentHour) !== -1 && currentSetting == "am") {
+                addRemoveClasses(elem,"current-entry","future-entry","past-entry");
+            } 
+            // else, it is AM or PM between the hours of 9am and 5pm
+            else {
+                // current afternoon entries
                 if (currentHour == hour && currentSetting == "pm") {
                     if (currentHour == 12 && hour == 12) {
                         checkEntryMinutes(currentMinute,entryMin,elem);
@@ -223,11 +219,9 @@ function colorCodeEntries() {
                     } else if (currentHour == 5 && hour == 5) {
                         checkEntryMinutes(currentMinute,entryMin,elem);
                     } else {
-                        $(elem).removeClass("current-entry");
-                        $(elem).removeClass("future-entry");
-                        $(elem).addClass("past-entry");
+                        addRemoveClasses(elem,"current-entry","future-entry","past-entry");
                     }
-                // morning classes
+                // current morning entries
                 } else if (currentHour == hour && currentSetting == "am") {
                     if (currentHour == 9 && hour == 9) {
                         checkEntryMinutes(currentMinute,entryMin,elem);
@@ -238,43 +232,43 @@ function colorCodeEntries() {
                     } else if (currentHour == 12 && hour == 12) {
                         checkEntryMinutes(currentMinute,entryMin,elem);
                     } else {
-                        $(elem).removeClass("current-entry");
-                        $(elem).removeClass("future-entry");
-                        $(elem).addClass("past-entry");
+                        addRemoveClasses(elem,"current-entry","future-entry","past-entry");
                     }
-                // its the afternoon so set past classes
+                // currentHour is greater than the current iterated hour in the array
                 } else if (currentHour > hour) {
+                    // in the AM, add future-entry class to hours 1-5
                     if ((currentHour == 9 || currentHour == 10 || currentHour == 11 || currentHour == 12) && (hour == 1 || hour == 2 || hour == 3 || hour == 4 || hour == 5)) {
-                        $(elem).removeClass("past-entry");
-                        $(elem).removeClass("current-entry");
-                        $(elem).addClass("future-entry");
-                    } else if (currentHour == 2 && hour == 1) {
-                        $(elem).removeClass("future-entry");
-                        $(elem).removeClass("current-entry");
-                        $(elem).addClass("past-entry");
-                    } else if (currentHour == 3 && hour == 2) {
-                        $(elem).removeClass("future-entry");
-                        $(elem).removeClass("current-entry");
-                        $(elem).addClass("past-entry");
-                    } else if (currentHour == 4 && hour == 3) {
-                        $(elem).removeClass("future-entry");
-                        $(elem).removeClass("current-entry");
-                        $(elem).addClass("past-entry");
-                    } else if (currentHour == 5 && hour == 4) {
-                        $(elem).removeClass("future-entry");
-                        $(elem).removeClass("current-entry");
-                        $(elem).addClass("past-entry");
-                    } else {
-                        $(elem).removeClass("future-entry");
-                        $(elem).removeClass("current-entry");
-                        $(elem).addClass("past-entry");
+                        addRemoveClasses(elem,"past-entry","current-entry","future-entry");
+                    } 
+                    // if currentHour is 2, set hour 1 to past
+                    else if (currentHour == 2 && hour == 1) {
+                        addRemoveClasses(elem,"future-entry","current-entry","past-entry");
+                    } 
+                    // if currentHour is 3, set hour 2 to past
+                    else if (currentHour == 3 && hour == 2) {
+                        addRemoveClasses(elem,"future-entry","current-entry","past-entry");
+                    } 
+                    // if currentHour is 4, set hour 3 to past
+                    else if (currentHour == 4 && hour == 3) {
+                        addRemoveClasses(elem,"future-entry","current-entry","past-entry");
+                    } 
+                    // if currentHour is 5, set hour 4 to past
+                    else if (currentHour == 5 && hour == 4) {
+                        addRemoveClasses(elem,"future-entry","current-entry","past-entry");
+                    } 
+                    // for everything else, set class to past-entry
+                    else {
+                        addRemoveClasses(elem,"future-entry","current-entry","past-entry");
                     }
-                // when its the afternoon set morning hours to past 
+                // currentHour is less than the current iterated hour in the array
                 } else if (currentHour < hour) { 
+                    // if currentHour is 1-5 and iterated hour from array is 9-12, set past entry on 9-2
                     if ((currentHour == 1 || currentHour == 2 || currentHour == 3 || currentHour == 4 || currentHour == 5) && (hour == 9 || hour == 10 || hour == 11 || hour == 12)) {
-                        $(elem).addClass("past-entry");
-                    } else {
-                        $(elem).addClass("future-entry");
+                        addRemoveClasses(elem,"future-entry","current-entry","past-entry");
+                    } 
+                    // else set class future-entry
+                    else {
+                        addRemoveClasses(elem,"past-entry","current-entry","future-entry");
                     }
                 }
             }
@@ -286,11 +280,16 @@ function colorCodeEntries() {
  * checks local storage for saved data
  */
 function checkForData() {
+    // initialize variables
     let existingEntries = JSON.parse(localStorage.getItem("SchedulerTasks"));
+    // if local storage exists
     if (existingEntries) {
+        // for each object in the array, update the text area with the saved value for the specified ID
         for (let i = 0; i < existingEntries.length; i++) {
+            // initialize variables
             let elemId = existingEntries[i].id,
                 elemVal = existingEntries[i].val;
+            // update value
             $(elemId).val(elemVal);
         }
    }
@@ -315,7 +314,9 @@ function saveEntry(selectedVal) {
         let existingEntry = existingEntries.find(a => a.id === elemId);
         // if ID exists, update the specific value
         if (existingEntry) {
+            // initialize variables
             let existingId = existingEntry.id;
+            // if key already exists in the array, target that ID and update the value to override the saved data
             Object.keys(existingEntries).forEach((elem) => {
                 if (existingEntries[elem].id === existingId) {
                     existingEntries[elem].val = entryVal;
@@ -332,8 +333,11 @@ function saveEntry(selectedVal) {
       // save to local storage
       localStorage.setItem("SchedulerTasks", JSON.stringify(newArr));
     }
+    // success message that displays when user clicks the save button
     successMsg.textContent = "Entry saved to local storage!";
+    // after 3 seconds, hide the message
     setTimeout(() => {
+        // empty the text
         successMsg.textContent = "";
     }, "3000");
 }
