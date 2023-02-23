@@ -18,8 +18,8 @@
     </header>
     <main>
         <div class="legend sticky">
-            <ul>
-                <li>Jump to a section:</li>
+            <ul style="margin-top: 0.25em;">
+                <li><strong>Jump to a section:</strong></li>
                 <li><a href="#nine">9:00 AM</a></li>
                 <li><a href="#ten">10:00 AM</a></li>
                 <li><a href="#eleven">11:00 AM</a></li>
@@ -31,18 +31,19 @@
                 <li><a href="#five">5:00 PM</a></li>
                 <li><a href="#back-to-top">Back to top ^</a></li>
             </ul>
-            <ul style="margin-top: 1em;">
-                <li>Entry color code:</li>
+            <ul style="margin-top: 0.25em;">
+                <li><strong>Entry color code:</strong></li>
                 <li><div class="square purple"></div>&nbsp;Past Event</li>
                 <li><div class="square red"></div>&nbsp;Current Event</li>
                 <li><div class="square green"></div>&nbsp;Future Event</li>
             </ul>
-            <table>
-                <tr>
-                    <td><h2 class="current-date"><!-- current date displays here --></h2></td>
-                    <td><p class="current-time"><!-- current time displays here --></p></td>
-                </tr>
-            </table>
+            <ul style="margin-top: 0.25em;">
+                <li class="date-time"><strong>Date:</strong> <span class="current-date"><!-- current date displays here --></span></li>
+                <li class="date-time"><strong>Time:</strong> <span class="current-time"><!-- current time displays here --></span></li>
+            </ul>
+            <ul style="margin-top: 0.25em;">
+                <li id="success-msg"></li>
+            </ul>
         </div>
         <div class="scheduler-wrapper"><!-- dynamically generated content appends here --></div>
     </main>
@@ -51,6 +52,7 @@
     </footer>
     <script src="./assets/js/jquery.min.js"></script>
     <script src="./assets/js/day.min.js"></script>
+    <script src="./assets/js/font-awesome.js"></script>
     <script src="./assets/js/script.js"></script>
 </body>
 </html>

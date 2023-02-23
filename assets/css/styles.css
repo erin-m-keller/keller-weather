@@ -53,16 +53,14 @@ main {
 }
 .current-date {
     text-align: center;
-    margin: 1em auto;
+    margin: 0 auto;
     font-family: var(--font-main-style);
     display: inline-block;
 }
 .current-time {
     text-align: center;
-    font-size: 1.5em;
     font-family: var(--font-main-style);
     display: inline-block;
-    padding-left: 1em;
 }
 .past-entry {
     background-color: #9e9bb2;
@@ -91,6 +89,10 @@ main {
 }
 .square.green {
     background-color: #4caf50;
+}
+#success-msg {
+    color: #4caf50;
+    font-weight: bold;
 }
 
 /************************************************
@@ -141,6 +143,10 @@ header p {
 }
 .legend ul li {
     display: inline;
+    font-family: var(--font-main-style);
+}
+.legend ul li.date-time {
+    display: block;
     font-family: var(--font-main-style);
 }
 
@@ -197,7 +203,7 @@ header p {
 }
 .scheduler .min-wrapper ul li {
     list-style-type: none;
-    line-height: 10;
+    line-height: 7.25;
     font-size: 1em;
     font-family: var(--font-main-style);
 }
@@ -221,6 +227,8 @@ header p {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
+    resize: none;
+    height: 5em;
 }
 .scheduler .entries-wrapper ul li button {
     border: 3px solid var(--black);
@@ -238,10 +246,10 @@ header p {
     cursor: pointer;
 }
 .scheduler .entries-wrapper ul li form {
-    padding: 1em 1em 0 1em;
+    padding: 0.25em 0.25em 0 0.25em;
 }
 .scheduler .entries-wrapper ul li:nth-child(4) form {
-    padding: 1em 1em 1em 1em;
+    padding: 0.25em 0.25em 0.25em 0.25em;
 }
 .scheduler .btn-wrapper {
     display: flex;

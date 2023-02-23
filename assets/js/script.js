@@ -35,7 +35,7 @@ init();
  */
 function setDate() {
     // initialize variables
-    let date = dayjs(new Date()).format('MMM D, YYYY');
+    let date = dayjs(new Date()).format('ddd MMM D, YYYY');
     // append to page
     $(".current-date").append(date);
 }
@@ -88,7 +88,7 @@ function generateScheduler(callback) {
         for (let j = 0; j < schedulerTimes[i].mins.length; j++) {
             let min = schedulerTimes[i].mins[j];
             $(minList).append("<li>" + min + "</li>");
-            $(entryList).append("<li><form id=\"form-" + text + "-" + min + "\" onsubmit=\"saveEntry(this);return false\"><label for=\"" + text + "-" + min + "\" class=\"screen-reader\">" + hour + ":" + min + "</label><textarea id=\"" + text + "-" + min + "\" name=\"" + text + "-" + min + "\" rows=\"4\" cols=\"25\" required></textarea><div class=\"btn-wrapper\"><button type=\"button\" id=\"btn-" + text + "-" + min + "\" onclick=\"clearEntry(this)\">Clear</button><button type=\"submit\">Save</button></div></form></li>");
+            $(entryList).append("<li><form id=\"form-" + text + "-" + min + "\" onsubmit=\"saveEntry(this);return false\"><label for=\"" + text + "-" + min + "\" class=\"screen-reader\">" + hour + ":" + min + "</label><textarea id=\"" + text + "-" + min + "\" name=\"" + text + "-" + min + "\" rows=\"4\" cols=\"25\" required></textarea><div class=\"btn-wrapper\"><button type=\"button\" id=\"btn-" + text + "-" + min + "\" onclick=\"clearEntry(this)\">Clear <i class=\"fa-solid fa-trash\"></i></button><button type=\"submit\">Save <i class=\"fa-solid fa-floppy-disk\"></i></button></div></form></li>");
         }
         $(minWrapper).append(minList);
         $(entriesWrapper).append(entryList);
@@ -100,6 +100,77 @@ function generateScheduler(callback) {
     callback();
 }
 /**
+ * @checkEntryMinutes
+ * sets class depending on the current min
+ */
+function checkEntryMinutes(currentMinute,entryMin,elem) {
+    if (currentMinute >= 0 && currentMinute < 15) {
+        if (entryMin === 0) {
+            $(elem).removeClass("past-entry");
+            $(elem).removeClass("future-entry");
+            $(elem).addClass("current-entry");
+        } else {
+            $(elem).removeClass("past-entry");
+            $(elem).removeClass("current-entry");
+            $(elem).addClass("future-entry");
+        }
+    } else if (currentMinute >= 15 && currentMinute < 30) {
+        if (entryMin === 15) {
+            $(elem).removeClass("past-entry");
+            $(elem).removeClass("future-entry");
+            $(elem).addClass("current-entry");
+        } else if (entryMin === 0) {
+            $(elem).removeClass("current-entry");
+            $(elem).removeClass("future-entry");
+            $(elem).addClass("past-entry");
+        } else {
+            $(elem).removeClass("past-entry");
+            $(elem).removeClass("current-entry");
+            $(elem).addClass("future-entry");
+        }
+    } else if (currentMinute >= 30 && currentMinute < 45) {
+        if (entryMin === 30) {
+            $(elem).removeClass("past-entry");
+            $(elem).removeClass("future-entry");
+            $(elem).addClass("current-entry");
+        } else if (entryMin === 0) {
+            $(elem).removeClass("current-entry");
+            $(elem).removeClass("future-entry");
+            $(elem).addClass("past-entry");
+        } else if (entryMin === 15) {
+            $(elem).removeClass("current-entry");
+            $(elem).removeClass("future-entry");
+            $(elem).addClass("past-entry");
+        } else {
+            $(elem).removeClass("past-entry");
+            $(elem).removeClass("current-entry");
+            $(elem).addClass("future-entry");
+        }
+    } else if (currentMinute >= 45 && currentMinute < 60) {
+        if (entryMin === 45) {
+            $(elem).removeClass("past-entry");
+            $(elem).removeClass("future-entry");
+            $(elem).addClass("current-entry");
+        } else if (entryMin === 0) {
+            $(elem).removeClass("current-entry");
+            $(elem).removeClass("future-entry");
+            $(elem).addClass("past-entry");
+        } else if (entryMin === 15) {
+            $(elem).removeClass("current-entry");
+            $(elem).removeClass("future-entry");
+            $(elem).addClass("past-entry");
+        } else if (entryMin === 30) {
+            $(elem).removeClass("current-entry");
+            $(elem).removeClass("future-entry");
+            $(elem).addClass("past-entry");
+        } else {
+            $(elem).removeClass("past-entry");
+            $(elem).removeClass("current-entry");
+            $(elem).addClass("future-entry");
+        }
+    }
+}
+/**
  * @colorCodeEntries
  * sets background color of text blocks
  * if time is in past, present or future
@@ -109,9 +180,14 @@ function colorCodeEntries() {
     let now = dayjs(),
         currentTime = now.format("h:mm"),
         fullTime = now.format("h:mm a"),
-        currentSetting = fullTime.substring(fullTime.indexOf(' ') + 1),
-        currentHour = currentTime.substring(0, currentTime.indexOf(":")), 
-        currentMinute = currentTime.substring(currentTime.lastIndexOf(':')+1);
+        //currentSetting = fullTime.substring(fullTime.indexOf(' ') + 1),
+        //currentHour = currentTime.substring(0, currentTime.indexOf(":")), 
+        //currentMinute = currentTime.substring(currentTime.lastIndexOf(':')+1),
+        currentSetting = "am",
+        currentHour = 9, 
+        currentMinute = 30,
+        pmArr = ["6","7","8","9","10","11"],
+        amArr = ["12","1","2","3","4","5","6","7","8"];
     // loop through the available entry times
     for (let i = 0; i < schedulerTimes.length; i++) {
         // initialize variables
@@ -123,100 +199,85 @@ function colorCodeEntries() {
             // initialize variables
             let elem = "#" + txt + "-" + mins[j],
                 entryMin = parseInt(mins[j]);
-            // if/else statement to set classes depending on the time
-            if (currentHour == hour && currentSetting == "pm") {
-                if (hour != "9" && hour != "10" && hour != "11" && hour != "12") {
-                    if (currentMinute >= 0 && currentMinute < 15) {
-                        if (entryMin === 0) {
-                            $(elem).addClass("current-entry");
-                        } else {
-                            $(elem).addClass("future-entry");
-                        }
-                    } else if (currentMinute >= 15 && currentMinute < 30) {
-                        if (entryMin === 15) {
-                            $(elem).addClass("current-entry");
-                        } else if (entryMin === 0) {
-                            $(elem).addClass("past-entry");
-                        } else {
-                            $(elem).addClass("future-entry");
-                        }
-                    } else if (currentMinute >= 30 && currentMinute < 45) {
-                        if (entryMin === 30) {
-                            $(elem).addClass("current-entry");
-                        } else if (entryMin === 0) {
-                            $(elem).addClass("past-entry");
-                        } else if (entryMin === 15) {
-                            $(elem).addClass("past-entry");
-                        } else {
-                            $(elem).addClass("future-entry");
-                        }
-                    } else if (currentMinute >= 45 && currentMinute < 60) {
-                        if (entryMin === 45) {
-                            $(elem).addClass("current-entry");
-                        } else if (entryMin === 0) {
-                            $(elem).addClass("past-entry");
-                        } else if (entryMin === 15) {
-                            $(elem).addClass("past-entry");
-                        } else if (entryMin === 30) {
-                            $(elem).addClass("past-entry");
-                        } else {
-                            $(elem).addClass("future-entry");
-                        }
-                    }
-                }
-            } else if (currentHour == hour && currentSetting == "am") {
-                if (currentMinute >= 0 && currentMinute < 15) {
-                    if (entryMin === 0) {
-                        $(elem).addClass("current-entry");
-                    } else {
-                        $(elem).addClass("future-entry");
-                    }
-                } else if (currentMinute >= 15 && currentMinute < 30) {
-                    if (entryMin === 15) {
-                        $(elem).addClass("current-entry");
-                    } else if (entryMin === 0) {
-                        $(elem).addClass("past-entry");
-                    } else {
-                        $(elem).addClass("future-entry");
-                    }
-                } else if (currentMinute >= 30 && currentMinute < 45) {
-                    if (entryMin === 30) {
-                        $(elem).addClass("current-entry");
-                    } else if (entryMin === 0) {
-                        $(elem).addClass("past-entry");
-                    } else if (entryMin === 15) {
-                        $(elem).addClass("past-entry");
-                    } else {
-                        $(elem).addClass("future-entry");
-                    }
-                } else if (currentMinute >= 45 && currentMinute < 60) {
-                    if (entryMin === 45) {
-                        $(elem).addClass("current-entry");
-                    } else if (entryMin === 0) {
-                        $(elem).addClass("past-entry");
-                    } else if (entryMin === 15) {
-                        $(elem).addClass("past-entry");
-                    } else if (entryMin === 30) {
-                        $(elem).addClass("past-entry");
-                    } else {
-                        $(elem).addClass("future-entry");
-                    }
-                }
-            } else if (currentHour > hour) {
+            if (pmArr.indexOf(currentHour) !== -1 && currentSetting == "pm") {
+                $(elem).removeClass("current-entry");
+                $(elem).removeClass("future-entry");
                 $(elem).addClass("past-entry");
-            } else if (currentHour < hour) {
-                if (hour === 9) {
-                    $(elem).addClass("past-entry");
-                } else if (hour === 10) {
-                    $(elem).addClass("past-entry");
-                } else if (hour === 11) {
-                    $(elem).addClass("past-entry");
-                } else if (hour === 12) {
-                    $(elem).addClass("past-entry");
-                } else {
-                    $(elem).addClass("future-entry");
+            } else if (amArr.indexOf(currentHour) !== -1 && currentSetting == "am") {
+                $(elem).removeClass("current-entry");
+                $(elem).removeClass("future-entry");
+                $(elem).addClass("past-entry");
+            } else {
+                // afternoon classes
+                if (currentHour == hour && currentSetting == "pm") {
+                    if (currentHour == 12 && hour == 12) {
+                        checkEntryMinutes(currentMinute,entryMin,elem);
+                    } else if (currentHour == 1 && hour == 1) {
+                        checkEntryMinutes(currentMinute,entryMin,elem);
+                    } else if (currentHour == 2 && hour == 2) {
+                        checkEntryMinutes(currentMinute,entryMin,elem);
+                    } else if (currentHour == 3 && hour == 3) {
+                        checkEntryMinutes(currentMinute,entryMin,elem);
+                    } else if (currentHour == 4 && hour == 4) {
+                        checkEntryMinutes(currentMinute,entryMin,elem);
+                    } else if (currentHour == 5 && hour == 5) {
+                        checkEntryMinutes(currentMinute,entryMin,elem);
+                    } else {
+                        $(elem).removeClass("current-entry");
+                        $(elem).removeClass("future-entry");
+                        $(elem).addClass("past-entry");
+                    }
+                // morning classes
+                } else if (currentHour == hour && currentSetting == "am") {
+                    if (currentHour == 9 && hour == 9) {
+                        checkEntryMinutes(currentMinute,entryMin,elem);
+                    } else if (currentHour == 10 && hour == 10) {
+                        checkEntryMinutes(currentMinute,entryMin,elem);
+                    } else if (currentHour == 11 && hour == 11) {
+                        checkEntryMinutes(currentMinute,entryMin,elem);
+                    } else if (currentHour == 12 && hour == 12) {
+                        checkEntryMinutes(currentMinute,entryMin,elem);
+                    } else {
+                        $(elem).removeClass("current-entry");
+                        $(elem).removeClass("future-entry");
+                        $(elem).addClass("past-entry");
+                    }
+                // its the afternoon so set past classes
+                } else if (currentHour > hour) {
+                    if ((currentHour == 9 || currentHour == 10 || currentHour == 11 || currentHour == 12) && (hour == 1 || hour == 2 || hour == 3 || hour == 4 || hour == 5)) {
+                        $(elem).removeClass("past-entry");
+                        $(elem).removeClass("current-entry");
+                        $(elem).addClass("future-entry");
+                    } else if (currentHour == 2 && hour == 1) {
+                        $(elem).removeClass("future-entry");
+                        $(elem).removeClass("current-entry");
+                        $(elem).addClass("past-entry");
+                    } else if (currentHour == 3 && hour == 2) {
+                        $(elem).removeClass("future-entry");
+                        $(elem).removeClass("current-entry");
+                        $(elem).addClass("past-entry");
+                    } else if (currentHour == 4 && hour == 3) {
+                        $(elem).removeClass("future-entry");
+                        $(elem).removeClass("current-entry");
+                        $(elem).addClass("past-entry");
+                    } else if (currentHour == 5 && hour == 4) {
+                        $(elem).removeClass("future-entry");
+                        $(elem).removeClass("current-entry");
+                        $(elem).addClass("past-entry");
+                    } else {
+                        $(elem).removeClass("future-entry");
+                        $(elem).removeClass("current-entry");
+                        $(elem).addClass("past-entry");
+                    }
+                // when its the afternoon set morning hours to past 
+                } else if (currentHour < hour) { 
+                    if ((currentHour == 1 || currentHour == 2 || currentHour == 3 || currentHour == 4 || currentHour == 5) && (hour == 9 || hour == 10 || hour == 11 || hour == 12)) {
+                        $(elem).addClass("past-entry");
+                    } else {
+                        $(elem).addClass("future-entry");
+                    }
                 }
-            } 
+            }
         }
     }
 }
@@ -244,7 +305,8 @@ function saveEntry(selectedVal) {
         entryVal = $(elemId).val(),
         newArr = [],
         existingEntries = JSON.parse(localStorage.getItem("SchedulerTasks")),
-        entriesObj = { id: elemId, val: entryVal };
+        entriesObj = { id: elemId, val: entryVal },
+        successMsg = document.getElementById("success-msg");
     // create a new entry object
     newArr.push(entriesObj);
     // if local storage exists
@@ -270,4 +332,8 @@ function saveEntry(selectedVal) {
       // save to local storage
       localStorage.setItem("SchedulerTasks", JSON.stringify(newArr));
     }
+    successMsg.textContent = "Entry saved to local storage!";
+    setTimeout(() => {
+        successMsg.textContent = "";
+    }, "3000");
 }
