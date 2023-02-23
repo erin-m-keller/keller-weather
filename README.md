@@ -40,4 +40,4 @@ Page published at: [https://erin-m-keller.github.io/keller-scheduler/](https://e
 
 ## License
 
-Please refer to the LICENSE in the repo.
+[MIT](https://choosealicense.com/licenses/mit/)
