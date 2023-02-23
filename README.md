@@ -36,7 +36,7 @@ THEN the saved events persist
 
 ## Deployed page
 
-Page published at: [https://erin-m-keller.github.io/keller-scheduler/](https://erin-m-keller.github.io/keller-scheduler/)
+[View Published Page](https://erin-m-keller.github.io/keller-scheduler/)
 
 ## License
 
