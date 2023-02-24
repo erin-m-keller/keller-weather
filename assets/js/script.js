@@ -178,13 +178,9 @@ function colorCodeEntries() {
     let now = dayjs(),
         currentTime = now.format("h:mm"),
         fullTime = now.format("h:mm a"),
-        //currentSetting = fullTime.substring(fullTime.indexOf(' ') + 1),
-        //currentHour = currentTime.substring(0, currentTime.indexOf(":")), 
-        //currentMinute = currentTime.substring(currentTime.lastIndexOf(':')+1),
-
-        currentSetting = "am",
-        currentHour = 9, 
-        currentMinute = 36,
+        currentSetting = fullTime.substring(fullTime.indexOf(' ') + 1),
+        currentHour = currentTime.substring(0, currentTime.indexOf(":")), 
+        currentMinute = currentTime.substring(currentTime.lastIndexOf(':')+1),
         pmArr = ["6","7","8","9","10","11"],
         amArr = ["12","1","2","3","4","5","6","7","8"];
     // loop through the available entry times
