@@ -156,20 +156,20 @@ header p {
 
    The base styles for the scheduler
 ************************************************/
-.schedule-wrapper {
-    margin-top: 87px;
+.scheduler-wrapper {
+    margin: 8em 0;
 }
 .scheduler {
     display: flex;
     width: 90%;
     max-width: 1000px;
-    margin: 6em auto;
+    margin: 1em auto 0;
     border-radius: 10px;
     align-items: stretch;
     justify-content: center;
     background-color: var(--bg-color-two);
     position: relative;
-    scroll-margin-top: 325px;
+    scroll-margin-top: 150px;
 }
 @media screen and (min-width: 600px) {
     .scheduler {
@@ -204,13 +204,13 @@ header p {
 }
 .scheduler .min-wrapper ul li {
     list-style-type: none;
-    line-height: 7.25;
+    line-height: 5.2;
     font-size: 1em;
     font-family: var(--font-main-style);
 }
 .scheduler .entries-wrapper ul {
     width: 100%;
-    margin-top: 0.6em;
+    margin: 0.6em 0;
 }
 .scheduler .entries-wrapper ul li {
     list-style-type: none;
@@ -222,21 +222,22 @@ header p {
     border-top: 1px dashed var(--bg-color-two);
     border-bottom: 2px dashed var(--bg-color-three);
     font-family: var(--font-main-style);
-    width: 100%;
+    width: 70%;
     padding: 1em;
-    display: block;
+    display: inline-block;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
     resize: none;
     height: 5em;
+    flex: 1;
 }
 .scheduler .entries-wrapper ul li button {
     border: 3px solid var(--black);
     background-color: var(--bg-color-two);
-    padding: 0.5em;
+    padding: 0.25em;
     display: block;
-    width: 100%;
+    width: 70%;
     border-radius: 20px;
     margin: 0.5em;
     text-transform: uppercase;
@@ -248,13 +249,16 @@ header p {
 }
 .scheduler .entries-wrapper ul li form {
     padding: 0.25em 0.25em 0 0.25em;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
 }
 .scheduler .entries-wrapper ul li:nth-child(4) form {
     padding: 0.25em 0.25em 0.25em 0.25em;
 }
 .scheduler .btn-wrapper {
-    display: flex;
-    flex-direction: row;
+    display: inline-block;
+    flex: 0 0 8em;
 }
 
 /************************************************
