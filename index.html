@@ -6,19 +6,95 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge"> 
     <link rel="icon" href="./assets/images/favicon.ico" />
     <link rel="apple-touch-icon" href="./assets/images/favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="./assets/css/bulma.min.css">
     <link rel="stylesheet" type="text/css" href="./assets/css/styles.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:100,200,300,400,500,600,700,800,900">
     <title>Weather Dashboard</title>
 </head>
 <body>
-    <header></header>
-    <main></main>
+    <header>
+      <nav class="navbar" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+          <a class="navbar-item logo" href="./">
+            <span class="icon">
+              <i class="fa fa-solid fa-bolt"></i>
+            </span>
+            <span class="logo-txt">Weather Dashboard</span>
+          </a>    
+          <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="side-bar" onclick="toggleNav()">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+          </a>
+        </div>
+      </nav>
+    </header>
+    <main class="main-wrapper">
+      <aside id="side-bar">
+        <article class="panel is-danger">
+          <div class="panel-heading">
+            <p>Search for a City</p>
+          </div>
+          <div class="panel-block">
+            <form onsubmit="searchCity();return false">
+              <p class="control has-icons-left">
+                <input class="input is-danger" id="search-input" type="text" placeholder="Search" required>
+                <span class="icon is-left">
+                  <i class="fas fa-search" aria-hidden="true"></i>
+                </span>
+              </p>
+              <button class="button is-danger" type="submit">
+                Search
+              </button>
+            </form>
+          </div>
+          <a class="panel-block">
+            <span class="panel-icon">
+              <i class="fas fa-duotone fa-city" aria-hidden="true"></i>
+            </span>
+            Denver
+          </a>
+          <a class="panel-block">
+            <span class="panel-icon">
+              <i class="fas fa-duotone fa-city" aria-hidden="true"></i>
+            </span>
+            Chicago
+          </a>
+          <a class="panel-block">
+            <span class="panel-icon">
+              <i class="fas fa-duotone fa-city" aria-hidden="true"></i>
+            </span>
+            New York
+          </a>
+        </article>
+      </aside>
+      <section class="main-content">
+        <div class="block">
+          <p class="city-name"></p>
+          <img src="" class="weather-condition" />
+        </div>
+        <div class="block">
+          <p class="city-temp"></p>
+          <p class="city-feelslike"></p>
+          <p class="city-humidity"></p>
+          <p class="city-wind"></p>
+          <p class="city-sunrise"></p>
+          <p class="city-sunset"></p>
+        </div>
+        <div class="block">
+          <p class="forecast-title"><strong>5-day Forecast</strong></p>
+          <div id="forecast-wrapper"></div>
+        </div>
+      </section>
+    </main>
     <footer class="footer">
-      <h3>&copy; 2023 <a href="https://erin-m-keller.github.io/keller-portfolio/" target="_blank" rel="noreferrer">Erin Keller</a></h3>
+      <div class="content has-text-centered">
+        <p>&copy; 2023 <a href="https://erin-m-keller.github.io/keller-portfolio/" target="_blank" rel="noreferrer">Erin Keller</a></p>
+      </div>
     </footer>
+    <script src="./assets/js/fontawesome.min.js"></script>
+    <script src="./assets/js/moment.min.js"></script>
     <script src="./assets/js/jquery.min.js"></script>
-    <script src="./assets/js/day.min.js"></script>
-    <script src="./assets/js/font-awesome.js"></script>
     <script src="./assets/js/script.js"></script>
 </body>
 </html>
