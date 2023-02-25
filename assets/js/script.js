@@ -281,16 +281,14 @@ function formatCity(city) {
     }
     return cityStr.join(' '); 
  }
- /*
-          <a class="panel-block">
-            <span class="panel-icon">
-              <i class="fas fa-duotone fa-city" aria-hidden="true"></i>
-            </span>
-            Denver
-          </a>
- */
 function buildSearchHistory() {
-    
+    let searchPanel = $(".search-history"),
+    searchStorage = JSON.parse(localStorage.getItem("SearchedCities"));
+    searchPanel.empty();
+    for (var i = 0; i < searchStorage.length; i++) {
+        let cityName = searchStorage[i];
+        searchPanel.append("<a class=\"panel-block\"><span class=\"panel-icon\"><i class=\"fas fa-duotone fa-city\" aria-hidden=\"true\"></i></span>" + cityName + "</a>");
+    }
 }
 function searchCity(e) {
     let cityName = formatCity($("#search-input").val()),
@@ -306,6 +304,7 @@ function searchCity(e) {
         localStorage.setItem("SearchedCities",JSON.stringify(searchArr));
     }
     $('#search-input').val('');
+    buildSearchHistory();
 }
 function loadCurrentCityData() {
     var sunriseTimestamp = currentCityData.sys.sunrise,
@@ -346,6 +345,6 @@ function loadCurrentCityData() {
     $(".weather-condition").attr("src", "https://openweathermap.org/img/wn/" + currentCityData.weather[0].icon + "@2x.png");
 
 }
-
+buildSearchHistory();
 loadCurrentCityData();
 document.getElementById("search-form").addEventListener("submit", searchCity);
