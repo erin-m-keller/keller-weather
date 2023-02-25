@@ -274,18 +274,37 @@ function toggleNav() {
         document.getElementById("side-bar").style.marginLeft = "0";
     }
 }
-/*
-                <div class="tile is-parent" id="day-one">
-                  <article class="tile is-child notification is-danger">
-                    <p class="tile-txt">Date</p>
-                    <p class="tile-txt">Temp</p>
-                    <p class="tile-txt">Humidity</p>
-                  </article>
-                </div>
-*/
-function searchCity() {
-    let inputVal = $("#search-input").val().replace(/ /g, '+');;
-    console.log(inputVal);
+function formatCity(city) {
+    var cityStr = city.toLowerCase().split(' ');
+    for (var i = 0; i < cityStr.length; i++) {
+        cityStr[i] = cityStr[i].charAt(0).toUpperCase() + cityStr[i].substring(1);     
+    }
+    return cityStr.join(' '); 
+ }
+ /*
+          <a class="panel-block">
+            <span class="panel-icon">
+              <i class="fas fa-duotone fa-city" aria-hidden="true"></i>
+            </span>
+            Denver
+          </a>
+ */
+function buildSearchHistory() {
+    
+}
+function searchCity(e) {
+    let cityName = formatCity($("#search-input").val()),
+        cityUrlParam = $("#search-input").val().replace(/ /g, '+'),
+        searchArr = [],
+        searchStorage = JSON.parse(localStorage.getItem("SearchedCities"));
+    e.preventDefault();
+    if (searchStorage) {
+        searchStorage.push(cityName);
+        localStorage.setItem("SearchedCities",JSON.stringify(searchStorage));
+    } else {
+        searchArr.push(cityName);
+        localStorage.setItem("SearchedCities",JSON.stringify(searchArr));
+    }
     $('#search-input').val('');
 }
 function loadCurrentCityData() {
@@ -327,4 +346,6 @@ function loadCurrentCityData() {
     $(".weather-condition").attr("src", "https://openweathermap.org/img/wn/" + currentCityData.weather[0].icon + "@2x.png");
 
 }
+
 loadCurrentCityData();
+document.getElementById("search-form").addEventListener("submit", searchCity);

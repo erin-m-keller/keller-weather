@@ -31,41 +31,24 @@
     </header>
     <main class="main-wrapper">
       <aside id="side-bar">
-        <article class="panel is-danger">
+        <article class="panel is-danger" id="search-panel">
           <div class="panel-heading">
             <p>Search for a City</p>
           </div>
           <div class="panel-block">
-            <form onsubmit="searchCity();return false">
+            <form id="search-form">
               <p class="control has-icons-left">
                 <input class="input is-danger" id="search-input" type="text" placeholder="Search" required>
                 <span class="icon is-left">
                   <i class="fas fa-search" aria-hidden="true"></i>
                 </span>
               </p>
-              <button class="button is-danger" type="submit">
+              <button class="button is-danger block mt-2" type="submit">
                 Search
               </button>
             </form>
           </div>
-          <a class="panel-block">
-            <span class="panel-icon">
-              <i class="fas fa-duotone fa-city" aria-hidden="true"></i>
-            </span>
-            Denver
-          </a>
-          <a class="panel-block">
-            <span class="panel-icon">
-              <i class="fas fa-duotone fa-city" aria-hidden="true"></i>
-            </span>
-            Chicago
-          </a>
-          <a class="panel-block">
-            <span class="panel-icon">
-              <i class="fas fa-duotone fa-city" aria-hidden="true"></i>
-            </span>
-            New York
-          </a>
+          <!-- search history goes here -->
         </article>
       </aside>
       <section class="main-content">
