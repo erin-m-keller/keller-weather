@@ -4,6 +4,12 @@
 
 An application that will display the current and future weather conditions for any selected city. Powered by [OpenWeather API](https://openweathermap.org/api).
 
+## Technology Stack
+
+![HTML5](https://img.shields.io/badge/HTML-239120?style=for-the-badge&logo=html5&logoColor=white)
+![CSS](https://img.shields.io/badge/CSS-239120?&style=for-the-badge&logo=css3&logoColor=white)
+![jQuery](https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jquery&logoColor=white)
+
 ## User Story
 
 ```md
