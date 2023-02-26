@@ -43,18 +43,25 @@
                   <i class="fas fa-search" aria-hidden="true"></i>
                 </span>
               </p>
-              <button class="button is-danger block mt-2" type="submit">
+              <button class="button is-danger block mt-2 mb-0" type="submit">
                 Search
               </button>
+              <small class="not-found inactive">City not found</small>
             </form>
           </div>
-          <div class="search-history">
-            <!-- search history goes here -->
-          </div>
+          <div class="search-history"></div>
         </article>
       </aside>
-      <section class="main-content">
+      <div class="loading-wrapper is-active">
+        <h2>Fetching local city details...</h2>
+        <p>This may take a minute.</p>
+        <img src="./assets/images/loading.svg" alt="Loading icon" />
+      </div>
+      <section class="main-content inactive">
         <div class="block">
+          <div class="geolocation-error notification is-danger inactive">
+            There was an error with the geolocation API when trying to fetch your city. Please try again later.
+          </div>
           <p class="city-name"></p>
           <img src="" class="weather-condition" />
         </div>
@@ -65,6 +72,7 @@
           <p class="city-wind"></p>
           <p class="city-sunrise"></p>
           <p class="city-sunset"></p>
+          <p class="uv-index"></p>
         </div>
         <div class="block">
           <p class="forecast-title"><strong>5-day Forecast</strong></p>
