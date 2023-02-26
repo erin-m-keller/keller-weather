@@ -150,6 +150,10 @@ function buildFiveDayForecastContent(currentData) {
             } 
     }
 }
+function clearSearch() {
+    localStorage.removeItem("SearchedCities");
+    $(".search-history").empty();
+}
 async function getUvIndex (url) {
     await fetch(url).then(function (res) {
         if (res.ok) {
