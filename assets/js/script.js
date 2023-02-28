@@ -4,10 +4,14 @@ let cityTimezone,
 $(window).on("resize", function() {
     let winWidth = $(this).width();
     if (winWidth < 700) {
-        document.getElementById("side-bar").style.marginLeft = "-16em";
+        $("#side-bar").css("margin-left","-16em");
     } else if (winWidth > 700) {
-        document.getElementById("side-bar").style.marginLeft = "0";
+        $("#side-bar").css("margin-left","0");
     }
+});
+$( "#search-form" ).submit(function(e) {
+    e.preventDefault();
+    formSearchCity(e);
 });
 function init () {
     buildSearchHistory();
@@ -19,7 +23,6 @@ function init () {
         let url = buildCityUrl("Detroit");
         fetchCurrentCityData(url,"Detroit");
     }
-    document.getElementById("search-form").addEventListener("submit", formSearchCity);
 }
 init();
 function successCallback (position) {
@@ -29,20 +32,19 @@ function successCallback (position) {
 function errorCallback (error) {
     let url = buildCityUrl("Detroit");
     fetchCurrentCityData(url,"Detroit");
-    console.log(error);
     $(".geolocation-error").removeClass("inactive").addClass("is-active");
     setTimeout(function() {
         $(".geolocation-error").removeClass("is-active").addClass("inactive");
-    }, 3000);
+    }, 5000);
 };
 function toggleNav() {
     let isActive = $(".navbar-burger").hasClass("is-active");
     if (isActive) {
         $(".navbar-burger").removeClass("is-active");
-        document.getElementById("side-bar").style.marginLeft = "-16em";
+        $("#side-bar").css("margin-left","-16em");
     } else {
         $(".navbar-burger").addClass("is-active");
-        document.getElementById("side-bar").style.marginLeft = "0";
+        $("#side-bar").css("margin-left","0");
     }
 }
 function buildCityUrl (cityName) {
@@ -55,15 +57,15 @@ function buildFiveDayUrl (cityName) {
     return fiveDayForecastUrl;
 }
 function formatCity(city) {
-    var cityStr = city.toLowerCase().split(' ');
-    for (var i = 0; i < cityStr.length; i++) {
+    let cityStr = city.toLowerCase().split(' ');
+    for (let i = 0; i < cityStr.length; i++) {
         cityStr[i] = cityStr[i].charAt(0).toUpperCase() + cityStr[i].substring(1);     
     }
     return cityStr.join(' '); 
  }
 function buildSearchHistory() {
     let searchPanel = $(".search-history"),
-    searchStorage = JSON.parse(localStorage.getItem("SearchedCities"));
+        searchStorage = JSON.parse(localStorage.getItem("SearchedCities"));
     searchPanel.empty();
     if (searchStorage) {
         if (searchStorage.length > 1) {
@@ -185,7 +187,10 @@ async function fetchCurrentLatLonData (url) {
             })
         } else {
             if (res.status == "404") {
-                console.log("city not found");
+                $(".not-found").removeClass("inactive").addClass("is-active");
+                setTimeout(function() {
+                    $(".not-found").removeClass("is-active").addClass("inactive");
+                }, 3000);
             }
         }
     })
