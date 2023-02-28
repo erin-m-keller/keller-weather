@@ -156,6 +156,12 @@ function clearSearch() {
     localStorage.removeItem("SearchedCities");
     $(".search-history").empty();
 }
+function cityNotFound() {
+    $(".not-found").removeClass("inactive").addClass("is-active");
+    setTimeout(function() {
+        $(".not-found").removeClass("is-active").addClass("inactive");
+    }, 5000);
+}
 async function getUvIndex (url) {
     await fetch(url).then(function (res) {
         if (res.ok) {
@@ -178,38 +184,30 @@ async function getUvIndex (url) {
     })
 }
 async function fetchCurrentLatLonData (url) {
-    let currentCityData;
     await fetch(url).then(function (res) {
         if (res.ok) {
             res.json().then(function (data) {
-                currentCityData = data;
+                let currentCityData = data;
                 buildCurrentCityContent(currentCityData);
             })
         } else {
             if (res.status == "404") {
-                $(".not-found").removeClass("inactive").addClass("is-active");
-                setTimeout(function() {
-                    $(".not-found").removeClass("is-active").addClass("inactive");
-                }, 3000);
+                cityNotFound();
             }
         }
     })
 }
 async function fetchCurrentCityData (url,city) {
-    let currentCityData;
     await fetch(url).then(function (res) {
         if (res.ok) {
             res.json().then(function (data) {
-                currentCityData = data;
+                let currentCityData = data;
                 buildCurrentCityContent(currentCityData);
                 addCityToStorage(city);
             })
         } else {
             if (res.status == "404") {
-                $(".not-found").removeClass("inactive").addClass("is-active");
-                setTimeout(function() {
-                    $(".not-found").removeClass("is-active").addClass("inactive");
-                }, 3000);
+                cityNotFound();
             }
         }
     })
