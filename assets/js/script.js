@@ -1,6 +1,12 @@
 let cityTimezone,
     geoLocationApiKey = "e054ba02011d4c6290cedbdf89c0171e",
     openWeatherApiKey = "e69b9e2eef69c1c5006d043926d24dd0";
+$(document).ready(function() {
+    let winWidth = $(window).width();
+    if (winWidth == "700") {
+        $("#side-bar").css("margin-left","-16em");
+    }
+});
 $(window).on("resize", function() {
     let winWidth = $(this).width();
     if (winWidth < 700) {
