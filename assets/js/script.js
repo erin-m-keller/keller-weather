@@ -1,12 +1,7 @@
 let cityTimezone,
     geoLocationApiKey = "e054ba02011d4c6290cedbdf89c0171e",
-    openWeatherApiKey = "e69b9e2eef69c1c5006d043926d24dd0";
-$(document).ready(function() {
-    let winWidth = $(window).width();
-    if (winWidth == "700") {
-        $("#side-bar").css("margin-left","-16em");
-    }
-});
+    openWeatherApiKey = "e69b9e2eef69c1c5006d043926d24dd0",
+    reverseGeocodingApiKey = "d71d84f58a764df2ab54edb4bf6068db";
 $(window).on("resize", function() {
     let winWidth = $(this).width();
     if (winWidth < 700) {
@@ -128,6 +123,7 @@ function buildCurrentCityContent(currentData) {
         latitude = currentCityData.coord.lat,
         uvIndexUrl = "https://api.openweathermap.org/data/2.5/uvi?lat=" + latitude + "&lon=" + longitude + "&units=imperial&appid=" + openWeatherApiKey,
         fiveDayUrl = buildFiveDayUrl(cityName);
+    getLocalTime(latitude,longitude);
     getUvIndex(uvIndexUrl);
     fetchFiveDayForecastData(fiveDayUrl);
     $(".city-name,.city-temp,.city-feelslike,.city-humidity,.city-wind,.city-sunrise,.city-sunset").empty();
@@ -225,6 +221,21 @@ async function fetchFiveDayForecastData (url) {
             res.json().then(function (data) {
                 currentFiveDayForecastData = data;
                 buildFiveDayForecastContent(currentFiveDayForecastData);
+            })
+        } else {
+            console.log(res);
+        }
+    })
+}
+async function getLocalTime(latitude,longitude) {
+    let url = "https://api.geoapify.com/v1/geocode/reverse?lat=" + latitude + "&lon=" + longitude + "&apiKey=" + reverseGeocodingApiKey;
+    await fetch(url).then(function (res) {
+        if (res.ok) {
+            res.json().then(function (data) {
+                let timezone = data.features[0].properties.timezone.name,
+                    localTime = moment().tz(timezone).format('h:mm a');
+                $(".city-time").empty();
+                $(".city-time").append("<strong>Local Time:</strong> " + localTime);
             })
         } else {
             console.log(res);
