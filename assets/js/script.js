@@ -33,7 +33,7 @@ function successCallback (position) {
     let citySearchLatLonUrl = "https://api.openweathermap.org/data/2.5/weather?lat=" + position.coords.latitude + "&lon=" + position.coords.longitude + "&units=imperial&appid=" + openWeatherApiKey;
     fetchCurrentLatLonData(citySearchLatLonUrl);
 };
-function errorCallback (error) {
+function errorCallback () {
     let url = buildCityUrl("Detroit");
     fetchCurrentCityData(url,"Detroit");
     $(".geolocation-error").removeClass("inactive").addClass("is-active");
@@ -167,81 +167,85 @@ function cityNotFound() {
         $(".not-found").removeClass("is-active").addClass("inactive");
     }, 5000);
 }
-async function getUvIndex (url) {
-    await fetch(url).then(function (res) {
-        if (res.ok) {
-            res.json().then(function (data) {
-                let uvIdx = data.value,
-                    uvClass = "";
-                if (uvIdx <= 4) {
-                    uvClass = " is-primary";
-                } else if (uvIdx > 4 && uvIdx < 7) {
-                    uvClass = " is-warning";
-                } else {
-                    uvClass = " is-danger";
-                }
-                $(".uv-index").empty();
-                $(".uv-index").append("<strong>UV Index:</strong>&nbsp;&nbsp;<span class=\"tag" + uvClass + "\">" + uvIdx + "</span>");
-            })
+function getUvIndex (url) {
+    $.ajax({
+        url: url,
+        method: "GET",
+    }).then(function (data) {
+        let uvIdx = data.value,
+            uvClass = "";
+        if (uvIdx <= 4) {
+            uvClass = " is-primary";
+        } else if (uvIdx > 4 && uvIdx < 7) {
+            uvClass = " is-warning";
         } else {
-            console.log(res);
+            uvClass = " is-danger";
         }
-    })
+        $(".uv-index").empty();
+        $(".uv-index").append("<strong>UV Index:</strong>&nbsp;&nbsp;<span class=\"tag" + uvClass + "\">" + uvIdx + "</span>");
+    }).fail(function (){
+        console.log("Could not get data")
+    });
 }
-async function fetchCurrentLatLonData (url) {
-    await fetch(url).then(function (res) {
-        if (res.ok) {
-            res.json().then(function (data) {
-                let currentCityData = data;
-                buildCurrentCityContent(currentCityData);
-            })
-        } else {
-            if (res.status == "404") {
-                cityNotFound();
-            }
+function fetchCurrentLatLonData (url) {
+    $.ajax({
+        url: url,
+        method: "GET",
+    }).then(function (data) {
+        let currentCityData = data;
+        buildCurrentCityContent(currentCityData);
+    }).fail(function (jqXHR,textStatus,errorThrown) {
+        if (jqXHR.status == "404") {
+            cityNotFound();
         }
-    })
+        console.log("status: " + textStatus);
+        console.log("error thrown: " + errorThrown);
+    });
 }
-async function fetchCurrentCityData (url,city) {
-    await fetch(url).then(function (res) {
-        if (res.ok) {
-            res.json().then(function (data) {
-                let currentCityData = data;
-                buildCurrentCityContent(currentCityData);
-                addCityToStorage(city);
-            })
-        } else {
-            if (res.status == "404") {
-                cityNotFound();
-            }
+function fetchCurrentCityData (url,city) {
+    $.ajax({
+        url: url,
+        method: "GET",
+    }).then(function (data) {
+        let currentCityData = data;
+        buildCurrentCityContent(currentCityData);
+        addCityToStorage(city);
+        buildCurrentCityContent(currentCityData);
+    }).fail(function (jqXHR,textStatus,errorThrown) {
+        if (jqXHR.status == "404") {
+            cityNotFound();
         }
-    })
+        console.log("status: " + textStatus);
+        console.log("error thrown: " + errorThrown);
+    });
 }
-async function fetchFiveDayForecastData (url) {
+function fetchFiveDayForecastData (url) {
     let currentFiveDayForecastData;
-    await fetch(url).then(function (res) {
-        if (res.ok) {
-            res.json().then(function (data) {
-                currentFiveDayForecastData = data;
-                buildFiveDayForecastContent(currentFiveDayForecastData);
-            })
-        } else {
-            console.log(res);
-        }
-    })
+    $.ajax({
+        url: url,
+        method: "GET",
+    }).then(function (data) {
+        currentFiveDayForecastData = data;
+        buildFiveDayForecastContent(currentFiveDayForecastData);
+    }).fail(function (jqXHR,textStatus,errorThrown) {
+        console.log("status code: " + jqXHR.status);
+        console.log("status: " + textStatus);
+        console.log("error thrown: " + errorThrown);
+    });
 }
-async function getLocalTime(latitude,longitude) {
+function getLocalTime(latitude,longitude) {
     let url = "https://api.geoapify.com/v1/geocode/reverse?lat=" + latitude + "&lon=" + longitude + "&apiKey=" + reverseGeocodingApiKey;
-    await fetch(url).then(function (res) {
-        if (res.ok) {
-            res.json().then(function (data) {
-                let timezone = data.features[0].properties.timezone.name,
-                    localTime = moment().tz(timezone).format('h:mm a');
-                $(".city-time").empty();
-                $(".city-time").append("<strong>Local Time:</strong> " + localTime);
-            })
-        } else {
-            console.log(res);
-        }
-    })
+    $.ajax({
+        url: url,
+        method: "GET",
+    }).then(function (data) {
+        let timezone = data.features[0].properties.timezone.name,
+            localTime = moment().tz(timezone).format('h:mm a');
+        $(".city-time").empty();
+        $(".city-time").append("<strong>Local Time:</strong> " + localTime);
+    }).fail(function (jqXHR,textStatus,errorThrown) {
+        console.log("status code: " + jqXHR.status);
+        console.log("status: " + textStatus);
+        console.log("error thrown: " + errorThrown);
+    });
 }
