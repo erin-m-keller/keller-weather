@@ -288,11 +288,12 @@ function buildFiveDayForecastContent(currentData) {
             daysTime = moment.utc(weatherTimestamp,'X').add(cityTimezone,'seconds').format('h:mm a'),
             daysTemp = fiveDayForecastList[i].main.temp.toFixed(),
             daysHumidity = fiveDayForecastList[i].main.humidity,
+            daysWind = fiveDayForecastList[i].wind.speed.toFixed() + " MPH",
             weatherIcon = fiveDayForecastList[i].weather[0].icon,
             iconAlt = fiveDayForecastList[i].weather[0].main;
         // if time is either 2pm, 3pm, or 4pm then append the content to the page
         if (daysTime == "2:00 pm" || daysTime == "3:00 pm" || daysTime == "4:00 pm") {
-            $("#forecast-wrapper").append("<div class=\"forecast-tile\"><article class=\"danger\"><figure><img src=\"https://openweathermap.org/img/wn/" + weatherIcon + "@2x.png\" alt=\"" + iconAlt + "\"></figure><p class=\"tile-txt\">" + daysDate + "</p><p class=\"tile-txt\">Temperature: " + daysTemp + "°</p><p class=\"tile-txt\">Humidity: " + daysHumidity + "%</p></article></div>");
+            $("#forecast-wrapper").append("<div class=\"forecast-tile\"><article class=\"danger\"><figure><img src=\"https://openweathermap.org/img/wn/" + weatherIcon + "@2x.png\" alt=\"" + iconAlt + "\"></figure><p class=\"tile-txt\">" + daysDate + "</p><p class=\"tile-txt\">Temperature: " + daysTemp + "°</p><p class=\"tile-txt\">Humidity: " + daysHumidity + "%</p><p class=\"tile-txt\">Wind Speed: " + daysWind + "</p></article></div>");
             $(".loading-wrapper").removeClass("is-active").addClass("inactive");
             $(".main-content").removeClass("inactive").addClass("is-active");
         } 
